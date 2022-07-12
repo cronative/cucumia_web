@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-greendealsappv2-staging-34829-authRole",
+      "UnauthRoleArn": "arn:aws:iam::100599788329:role/amplify-greendealsappv2-staging-34829-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::100599788329:role/amplify-greendealsappv2-staging-34829-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-greendealsappv2-staging-34829-deployment",
+      "UnauthRoleName": "amplify-greendealsappv2-staging-34829-unauthRole",
+      "StackName": "amplify-greendealsappv2-staging-34829",
+      "StackId": "arn:aws:cloudformation:us-east-2:100599788329:stack/amplify-greendealsappv2-staging-34829/838467e0-6ea3-11ec-970a-061066120c32",
+      "AmplifyAppId": "d188470ikqnhki"
+    },
+    "categories": {
+      "auth": {
+        "greendealsappv2": {}
+      }
+    }
+  }
+}

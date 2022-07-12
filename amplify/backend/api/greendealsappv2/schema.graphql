@@ -1,0 +1,289 @@
+type SubscriptionLogs @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  shop_count: Int
+  mag_count: Int
+  usersID: ID! @index(name: "byUsers")
+  price: Float
+  purchase_date: AWSDateTime
+}
+
+type DeviceInfo @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  deviceToken: String
+  packageName: String
+  versionName: String
+  buildNumber: String
+  buildSignature: String
+  topicSubscrib: [String]
+  endpointAddress: String
+  usersID: ID! @index(name: "byUsers")
+}
+
+enum UploadingStat {
+  UPLOADED
+  FAILED
+  UPLOADING
+}
+
+type BulkUploadFiles @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  filename: String
+  bucketname: String
+  status: UploadingStat
+  usersID: ID! @index(name: "byUsers")
+  uploaded_at: AWSDateTime
+  verified: Boolean
+}
+
+type ActivityLog @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  datetime: AWSDateTime
+  actio: String
+  usersID: ID! @index(name: "byUsers")
+  brief_discription: String
+}
+
+type BundleProduct @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  bundlesID: ID! @index(name: "byBundles")
+  quantity: Int
+  ProductBundle: Product @hasOne
+}
+
+type Bundles @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  usersID: ID! @index(name: "byUsers")
+  price: String
+  bundle_img: [String]
+  thumbnail: String
+  BundleProd: [BundleProduct] @hasMany(indexName: "byBundles", fields: ["id"])
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+type InvitedUser @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  fullname: String
+  img_token: String
+  phn_number: AWSPhone
+  gmail_id: AWSEmail
+  fb_id: AWSEmail
+  apple_id: AWSEmail
+  email: AWSEmail
+  current_language: String
+  current_lat: Float
+  current_lon: Float
+  saved_location: String
+  radiusPrefernce: Float
+  deleted_parent: String
+  user_type: UserType
+  isUserSecure: Boolean
+  usersID: ID! @index(name: "byUsers")
+  status: Boolean
+}
+
+type ProductImg @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  img_token: String
+  tags: String
+  productID: ID! @index(name: "byProduct")
+}
+
+type AdvertisementBanner @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  img_token: String
+  lat: Float
+  lon: Float
+  discription: String
+  link_url: String
+  usersID: ID! @index(name: "byUsers")
+  start_from: AWSDateTime
+  end_on: AWSDateTime
+  is_active: Boolean
+}
+
+type UsersHierarchy @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  user_id: String
+  managed_by: String
+}
+
+type ProductionLogs @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  userid: String
+  partof: String
+  timestamp: AWSDateTime
+  logs: String
+  resolved: Boolean
+}
+
+type UserShopFavourite @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  usersID: ID @index(name: "byUsers")
+  shopID: ID @index(name: "byShop")
+}
+
+type UserShopReview @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  comment: String
+  rating: Float
+  shopID: ID @index(name: "byShop")
+  usersID: ID @index(name: "byUsers")
+}
+
+type UserProductReview @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  comment: String
+  Rating: Float
+  productID: ID! @index(name: "byProduct")
+  usersID: ID @index(name: "byUsers")
+}
+
+type Product @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  price: Float
+  img_token: String
+  deal_type: ProductDealType
+  product_category: ProductCategory
+  has_offer: Boolean
+  discount: Float
+  offer_title: String
+  offer_description: String
+  is_available: Boolean
+  shopID: ID @index(name: "byShop")
+  UserProductReviews: [ProductImg] @hasMany(indexName: "byProduct", fields: ["id"])
+  product_description: String
+  created_on: AWSDateTime
+  expires_on: AWSDateTime
+  available_from: AWSDateTime
+  currency_type: String
+  ProductImages: [ProductImg] @hasMany(indexName: "byProduct", fields: ["id"])
+  start_date: AWSDateTime
+}
+
+type ShopCategory @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  category_name: String
+  image_token: String
+  ShopsCategory: [Shop] @hasMany(indexName: "byShopCategory", fields: ["id"])
+}
+
+enum UserType {
+  ADMIN
+  MERCHANT
+  CUSTOMER
+  AFFILIATES
+  COUNTRY_HEAD
+  SHOP_ADMIN
+}
+
+enum ProductCategory {
+  FOOD
+  VEGITABLE
+  FASTFOOD
+}
+
+enum ProductDealType {
+  GREENDEALS
+  REDDEALS
+  HOTDEALS
+}
+
+type Magazines @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String
+  uploaded_on: AWSDateTime
+  offer_ends_on: AWSDateTime
+  website_url: AWSURL
+  img_tokens: [String]
+  usersID: ID @index(name: "byUsers")
+  thumbnail: String
+  lon: Float
+  lat: Float
+  publish_from: AWSDateTime
+}
+
+type Shop @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  phn_number: AWSPhone
+  img_token: [String]
+  opening_time: AWSTime
+  closing_time: AWSTime
+  about: String
+  phonepinID: ID @index(name: "byPhonePin")
+  usersID: ID @index(name: "byUsers")
+  shopcategoryID: ID @index(name: "byShopCategory")
+  ProductsShop: [Product] @hasMany(indexName: "byShop", fields: ["id"])
+  UserShopReviews: [UserShopReview] @hasMany(indexName: "byShop", fields: ["id"])
+  lon: Float
+  lat: Float
+  phy_address: String
+  UserShopFavourites: [UserShopFavourite] @hasMany(indexName: "byShop", fields: ["id"])
+  url: String
+  rating: Float
+  manager: String
+  license_renewed_on: AWSDateTime
+  license_expiry_date: AWSDateTime
+}
+
+type Users @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  fullname: String
+  img_token: String
+  phn_number: AWSPhone
+  gmail_id: AWSEmail
+  fb_id: AWSEmail
+  applie_id: AWSEmail
+  email: AWSEmail
+  phonepinID: ID @index(name: "byPhonePin")
+  userShop: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  Magazines_by: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  user_type: UserType
+  UserProductReviews: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  UserShopReviews: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  UserShopFavourites: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  current_language: String
+  current_lat: Float
+  isUserSecure: Boolean
+  radiusPreference: Float
+  saved_location: String
+  current_lon: Float
+  managed_by: String
+  deleted_parent: String
+  AdvertisementBanners: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  InvitedBy: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  city: String
+  country: String
+  status: UserStatus
+  BundlesUser: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  created_by: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  user_subscription: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  UserActivityLogs: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  BulkUploadFilesUsers: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  userDevices: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  MagazineShopCounts: [SubscriptionLogs] @hasMany(indexName: "byUsers", fields: ["id"])
+  mag_subscription_left: Int
+  shops_subscription_left: Int
+}
+
+type PhonePin @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  country_name: String
+  abbr: String
+  pin: String
+  UsersPhnPin: [Users] @hasMany(indexName: "byPhonePin", fields: ["id"])
+  ShopPhonePin: [Shop] @hasMany(indexName: "byPhonePin", fields: ["id"])
+}
+
+type Todo @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String
+  isComplete: Boolean!
+}
+ 

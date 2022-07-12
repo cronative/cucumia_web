@@ -1,0 +1,18 @@
+{
+  "resourceName": "greendealsv2",
+  "policyUUID": "9f84c7a9",
+  "bucketName": "greendealsappv2",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

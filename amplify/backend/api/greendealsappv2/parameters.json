@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "greendealsappv2",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-01-21T17:53:24.121Z"
+}
